@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ data.name }} | Portfolio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- FontAwesome for Social Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">{{ data.name }}</div>
+        <ul class="nav-links">
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#about">About & Timeline</a></li>
+            <li><a href="#contact" class="btn-nav">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <span class="badge">Welcome to my portfolio</span>
+            <h1>Hi, I'm {{ data.name }}</h1>
+            <p class="subtitle">{{ data.title }}</p>
+            <a href="#projects" class="btn-primary">View My Work</a>
+        </div>
+    </header>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section">
+        <h2>Skills & Expertise</h2>
+        <div class="skills-grid">
+            {% for skill in data.skills %}
+            <div class="skill-card">{{ skill }}</div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section section-alt">
+        <h2>Sample Projects</h2>
+        <div class="project-grid">
+            {% for project in data.projects %}
+            <div class="project-card">
+                <span class="category">{{ project.tag }}</span>
+                <h3>{{ project.title }}</h3>
+                <p>{{ project.desc }}</p>
+                {% if project.url %}
+                <a href="{{ project.url }}" target="_blank" rel="noopener noreferrer" class="project-link">
+                    View Project <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- About & Professional Timeline Section -->
+    <section id="about" class="section">
+        <h2>About Me & Experience</h2>
+        
+        <div class="about-narrative">
+            <p>I am a passionate developer and designer dedicated to creating intuitive, efficient, and visually compelling web applications. With a strong background in both design and engineering, I bridge the gap between aesthetics and function.</p>
+        </div>
+
+        <div class="two-column-layout">
+            <!-- Career Narrative / Experience -->
+            <div class="column">
+                <h3><i class="fa-solid fa-briefcase"></i> Career Narrative</h3>
+                <div class="timeline">
+                    {% for item in data.timeline %}
+                    <div class="timeline-item">
+                        <span class="timeline-date">{{ item.year }}</span>
+                        <h4>{{ item.role }}</h4>
+                        <p class="company">{{ item.company }}</p>
+                        <p>{{ item.details }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Education & Certifications -->
+            <div class="column">
+                <h3><i class="fa-solid fa-graduation-cap"></i> Education & Certifications</h3>
+                <div class="timeline">
+                    {% for edu in data.education %}
+                    <div class="timeline-item">
+                        <span class="timeline-date">{{ edu.year }}</span>
+                        <h4>{{ edu.degree }}</h4>
+                        <p class="company">{{ edu.school }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section section-contact">
+        <div class="contact-card">
+            <h2>Looking to expand your team? Let's get in touch.</h2>
+            <p>I am currently available for full-time roles and freelance projects.</p>
+            
+            <a href="mailto:{{ data.email }}" class="btn-primary btn-email">
+                <i class="fa-regular fa-envelope"></i> Send an Email
+            </a>
+
+            <div class="social-links">
+                <a href="{{ data.socials.linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="{{ data.socials.github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="{{ data.socials.twitter }}" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="{{ data.socials.facebook }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 {{ data.name }}. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
