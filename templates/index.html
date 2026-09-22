@@ -43,20 +43,35 @@
     <!-- Projects Section -->
     <section id="projects" class="section section-alt">
         <h2>Sample Projects</h2>
-        <div class="project-grid">
-            {% for project in data.projects %}
-            <div class="project-card">
-                <span class="category">{{ project.tag }}</span>
-                <h3>{{ project.title }}</h3>
-                <p>{{ project.desc }}</p>
-                {% if project.url %}
-                <a href="{{ project.url }}" target="_blank" rel="noopener noreferrer" class="project-link">
-                    View Project <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </a>
-                {% endif %}
+
+        <div class="carousel-wrapper">
+            <button class="carousel-btn carousel-btn-prev" id="prevBtn" aria-label="Previous projects">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div class="carousel-viewport">
+                <div class="carousel-track" id="carouselTrack">
+                    {% for project in data.projects %}
+                    <div class="project-card">
+                        <a href="{{ project.url }}" target="_blank" rel="noopener noreferrer" class="project-thumbnail thumb-{{ project.color }}">
+                            <i class="{{ project.icon }}"></i>
+                        </a>
+                        <span class="category">{{ project.tag }}</span>
+                        <h3>{{ project.title }}</h3>
+                        <a href="{{ project.url }}" target="_blank" rel="noopener noreferrer" class="project-link">
+                            View Project <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-            {% endfor %}
+
+            <button class="carousel-btn carousel-btn-next" id="nextBtn" aria-label="Next projects">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
         </div>
+
+        <div class="carousel-dots" id="carouselDots"></div>
     </section>
 
     <!-- About & Professional Timeline Section -->
@@ -104,16 +119,16 @@
         <div class="contact-card">
             <h2>Looking to expand your team? Let's get in touch.</h2>
             <p>I am currently available for full-time roles, MEL consultancies, and data science projects.</p>
-            
-            <a href="mailto:{{ data.email }}" class="btn-primary btn-email">
-                <i class="fa-regular fa-envelope"></i> Send an Email
-            </a>
 
-            <div class="social-links">
-                <a href="{{ data.socials.linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-                <a href="{{ data.socials.github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
-                <a href="{{ data.socials.twitter }}" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-                <a href="{{ data.socials.facebook }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+            <div class="social-links social-links-contact">
+                <a href="{{ data.socials.linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <i class="fa-brands fa-linkedin"></i>
+                    <span>LinkedIn</span>
+                </a>
+                <a href="{{ data.socials.github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <i class="fa-brands fa-github"></i>
+                    <span>GitHub</span>
+                </a>
             </div>
         </div>
     </section>
@@ -121,6 +136,90 @@
     <footer>
         <p>&copy; 2026 {{ data.name }}. All rights reserved.</p>
     </footer>
+
+    <script>
+        (function () {
+            const track = document.getElementById('carouselTrack');
+            const cards = Array.from(track.children);
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const dotsWrap = document.getElementById('carouselDots');
+
+            function getVisibleCount() {
+                if (window.innerWidth <= 700) return 1;
+                if (window.innerWidth <= 1000) return 2;
+                return 3;
+            }
+
+            let visible = getVisibleCount();
+            let index = 0;
+            const maxIndex = () => Math.max(0, cards.length - visible);
+
+            function buildDots() {
+                dotsWrap.innerHTML = '';
+                const dotCount = maxIndex() + 1;
+                for (let i = 0; i < dotCount; i++) {
+                    const dot = document.createElement('button');
+                    dot.className = 'carousel-dot';
+                    dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+                    dot.addEventListener('click', () => { index = i; update(); });
+                    dotsWrap.appendChild(dot);
+                }
+            }
+
+            function update() {
+                const cardWidth = cards[0].getBoundingClientRect().width;
+                const gap = parseFloat(getComputedStyle(track).gap || 0);
+                const offset = index * (cardWidth + gap);
+                track.style.transform = `translateX(-${offset}px)`;
+
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index >= maxIndex();
+
+                Array.from(dotsWrap.children).forEach((d, i) => {
+                    d.classList.toggle('active', i === index);
+                });
+            }
+
+            prevBtn.addEventListener('click', () => {
+                index = Math.max(0, index - 1);
+                update();
+            });
+
+            nextBtn.addEventListener('click', () => {
+                index = Math.min(maxIndex(), index + 1);
+                update();
+            });
+
+            // Swipe support
+            let startX = 0;
+            let isDragging = false;
+            track.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+            }, { passive: true });
+            track.addEventListener('touchend', (e) => {
+                if (!isDragging) return;
+                const diff = e.changedTouches[0].clientX - startX;
+                if (diff > 40) prevBtn.click();
+                else if (diff < -40) nextBtn.click();
+                isDragging = false;
+            });
+
+            window.addEventListener('resize', () => {
+                const newVisible = getVisibleCount();
+                if (newVisible !== visible) {
+                    visible = newVisible;
+                    index = Math.min(index, maxIndex());
+                    buildDots();
+                }
+                update();
+            });
+
+            buildDots();
+            update();
+        })();
+    </script>
 
 </body>
 </html>
