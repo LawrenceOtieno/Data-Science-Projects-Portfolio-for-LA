@@ -7,12 +7,9 @@ def home():
     client_data = {
         "name": "Lynn Ajema",
         "title": "Data Scientist & MEL Officer",
-        "email": "lynn.ajema@example.com",
         "socials": {
-            "linkedin": "https://linkedin.com/in/lynn-ajema",
-            "github": "https://github.com/lynn-ajema",
-            "facebook": "https://facebook.com/lynn-ajema",
-            "twitter": "https://twitter.com/lynn-ajema"
+            "linkedin": "https://www.linkedin.com/in/lynn-ajema-8331ba197",
+            "github": "https://github.com/Lajema"
         },
         "skills": [
             "Data Analysis & Science", 
@@ -24,22 +21,39 @@ def home():
         ],
         "projects": [
             {
-                "title": "Impact Evaluation Dashboard", 
-                "desc": "Built a comprehensive MEL reporting system to track key project indicators and field metrics.", 
-                "tag": "Data Science & MEL",
-                "url": "https://github.com/lynn-ajema/project-one"
+                "title": "M-Pesa Performance Dashboard", 
+                "tag": "Data Science",
+                "icon": "fa-solid fa-mobile-screen-button",
+                "color": "teal",
+                "url": "https://github.com/Lajema/M-pesa_performace_dashboard"
             },
             {
-                "title": "Statistical Forecasting Model", 
-                "desc": "Developed predictive models for client trend analysis using advanced statistical methods.", 
-                "tag": "Python / Statistics",
-                "url": "https://example.com/live-demo"
+                "title": "Kenya Economic Story", 
+                "tag": "Python / Economics",
+                "icon": "fa-solid fa-chart-line",
+                "color": "orange",
+                "url": "https://github.com/Lajema/Kenya-economic-story"
             },
             {
-                "title": "Interactive Data Pipeline", 
-                "desc": "Designed clean ETL pipelines to convert raw survey data into actionable visual insights.", 
+                "title": "Kenya Green Horizon Storyboard", 
                 "tag": "Data Analytics",
-                "url": "https://github.com/lynn-ajema/project-three"
+                "icon": "fa-solid fa-leaf",
+                "color": "sage",
+                "url": "https://github.com/Lajema/kenya_green_horizon_storyboard"
+            },
+             {
+                "title": "Churn Prediction", 
+                "tag": "Data Science / Machine Learning",
+                "icon": "fa-solid fa-chart-pie",
+                "color": "teal",
+                "url": "https://github.com/Lajema/churn_prediction"
+            },
+            {
+                "title": "Kenyan Brand Sentiment Tracker", 
+                "tag": "Data Science / Machine Learning",
+                "icon": "fa-solid fa-comments",
+                "color": "orange",
+                "url": "https://github.com/Lajema/Kenyan_brand_sentiment_tracker"
             }
         ],
         "timeline": [
